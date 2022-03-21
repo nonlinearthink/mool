@@ -1,0 +1,9 @@
+[workspace]
+members = [
+    "crates/mool",
+    "crates/mool-cli",
+    "crates/mool-codegen",
+    "crates/mool-ir",
+    "crates/mool-op",
+    "crates/mool-python",
+]
