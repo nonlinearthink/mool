@@ -4,17 +4,17 @@ peg::parser! {
     pub grammar python_parser() for str{
         use ast::Expr;
         use ast::IConstant;
-        pub rule program() -> Vec<Expr> = e:(expression() ** "\n") "\n" {e}
+        pub rule program() -> Vec<Expr> = e:(expression() ** "\n") "\n"* {e}
         pub rule expression() -> Expr = precedence!{
             l:identifier() whitespace() "=" whitespace() r:expression() whitespace() semicolon() {
                 Expr::Assign(l, Box::new(r))
             }
             --
-            l:(@) "+" r:@ { Expr::Add(Box::new(l), Box::new(r)) }
-            l:(@) "-" r:@ { Expr::Sub(Box::new(l), Box::new(r)) }
+            l:(@) whitespace() "+" whitespace() r:@ { Expr::Add(Box::new(l), Box::new(r)) }
+            l:(@) whitespace() "-" whitespace() r:@ { Expr::Sub(Box::new(l), Box::new(r)) }
             --
-            l:(@) "*" r:@ { Expr::Mul(Box::new(l), Box::new(r)) }
-            l:(@) "/" r:@ { Expr::Div(Box::new(l), Box::new(r)) }
+            l:(@) whitespace() "*" whitespace() r:@ { Expr::Mul(Box::new(l), Box::new(r)) }
+            l:(@) whitespace() "/" whitespace() r:@ { Expr::Div(Box::new(l), Box::new(r)) }
             --
             // x:@ "^" y:(@) { x.pow(y as u32) }
             // --
