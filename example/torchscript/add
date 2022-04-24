@@ -1,0 +1,3 @@
+def add(x: Tensor,
+    y: Tensor) -> Tensor:
+  return torch.add(x, y)

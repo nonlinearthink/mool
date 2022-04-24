@@ -1,0 +1,3 @@
+def div(x: Tensor,
+    y: Tensor) -> Tensor:
+  return torch.div(x, y)

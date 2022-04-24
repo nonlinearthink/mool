@@ -1,0 +1,3 @@
+fn(%x: Tensor[(10, 10), float32], %y: Tensor[(10, 10), float32]) -> Tensor[(10, 10), float32] {
+    @add(%x, %y);
+}

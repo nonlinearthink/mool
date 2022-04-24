@@ -1,0 +1,3 @@
+def mul(x: Tensor,
+    y: Tensor) -> Tensor:
+  return torch.mul(x, y)
