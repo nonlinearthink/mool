@@ -5,5 +5,5 @@ members = [
     "crates/mool-codegen",
     "crates/mool-ir",
     "crates/mool-op",
-    "crates/mool-python",
+    "crates/mool-torchscript",
 ]

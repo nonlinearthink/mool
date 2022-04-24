@@ -1,6 +1,6 @@
-pub mod ast;
-pub mod parser;
-pub use mool_torchscript as torchscript;
+mod ast;
+mod parser;
+pub use parser::torchscript_parser::program as parse;
 
 #[cfg(test)]
 mod tests {
