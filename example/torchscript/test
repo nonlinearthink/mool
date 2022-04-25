@@ -1,6 +1,0 @@
-
-
-
-def sub( x : Tensor , y : Tensor )->Tensor:
-  torch.sub(x, y)
-  return torch.sub(x, y)

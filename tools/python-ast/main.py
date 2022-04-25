@@ -17,20 +17,3 @@ for file in files:
         with open(output_name, 'w') as output:
             output.write(ast.dump(ast.parse(code)))
     print('compile {} to {} is finished.'.format(input_name, output_name))
-
-def fn (
-a
-:
-int
-,
-b
-:
-int
-)->int:
-    pass
-fn
-(
-    1
-    ,
-    1
-    )

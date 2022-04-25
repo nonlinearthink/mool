@@ -1,3 +1,5 @@
 def add(x: Tensor,
     y: Tensor) -> Tensor:
   return torch.add(x, y)
+
+add(torch.tensor([1, 2]), torch.tensor([2, 4]))
