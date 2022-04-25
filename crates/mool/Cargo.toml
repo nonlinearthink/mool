@@ -7,6 +7,7 @@ edition = "2018"
 
 [dependencies]
 mool_torchscript = { path = "../mool-torchscript" }
+mool_ir = { path = "../mool-ir" }
 peg = "0.8.0"
 serde = { version = "*", features = ["derive"] }
 serde_json = "*"

@@ -58,6 +58,9 @@ fn main() {
             "torchscript" => {
                 compile_torchscript(&code);
             }
+            "mool" => {
+                compile_mool(&code);
+            }
             _ => {
                 println!("暂不支持编译{}", opt.source)
             }
@@ -66,12 +69,28 @@ fn main() {
 }
 
 fn compile_torchscript(code: &String) {
-    let python_ast = mool::torchscript::parse(&code).unwrap();
+    let torchscript_ast = mool::torchscript::parse(&code).unwrap();
     // 输出抽象语法树
     match DEBUG.get() {
         Some(&debug) => {
             if debug {
-                println!("AST:\n{}\n", serde_json::to_string(&python_ast).unwrap());
+                println!(
+                    "AST:\n{}\n",
+                    serde_json::to_string(&torchscript_ast).unwrap()
+                );
+            }
+        }
+        None => panic!("未运行初始化"),
+    }
+}
+
+fn compile_mool(code: &String) {
+    let mool_ast = mool::ir::parse(&code).unwrap();
+    // 输出抽象语法树
+    match DEBUG.get() {
+        Some(&debug) => {
+            if debug {
+                println!("AST:\n{}\n", serde_json::to_string(&mool_ast).unwrap());
             }
         }
         None => panic!("未运行初始化"),

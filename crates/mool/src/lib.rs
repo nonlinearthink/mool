@@ -1,5 +1,4 @@
-pub mod ast;
-pub mod parser;
+pub use mool_ir as ir;
 pub use mool_torchscript as torchscript;
 
 #[cfg(test)]
