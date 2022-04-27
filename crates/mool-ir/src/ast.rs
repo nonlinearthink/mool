@@ -8,7 +8,7 @@ pub enum Program {
 
 #[derive(Serialize, Deserialize, Debug)]
 pub enum Expr {
-    Variable(Variable),
+    Assign(Variable, Box<Expr>),
     Literal(Literal),
     Function(Function),
     Call(String, Vec<Expr>),

@@ -1,6 +1,7 @@
 use once_cell::sync::OnceCell;
 use std::fs::File;
 use std::io::Read;
+use std::io::Write;
 use std::path::PathBuf;
 use structopt::StructOpt;
 
@@ -51,7 +52,7 @@ fn main() {
         );
         // 读取代码
         let mut code = String::new();
-        let mut f = File::open(current_filename).unwrap();
+        let mut f = File::open(current_filename.clone()).unwrap();
         f.read_to_string(&mut code).unwrap();
         // 编译
         match &opt.source as &str {
@@ -59,7 +60,14 @@ fn main() {
                 compile_torchscript(&code);
             }
             "mool" => {
-                compile_mool(&code);
+                let llvm_code = compile_mool(&code);
+                let mut f = File::create(
+                    current_filename
+                        .replace("mool", "llvm")
+                        .replace(".llvm", ".ll"),
+                )
+                .unwrap();
+                f.write_all(llvm_code.as_bytes()).unwrap();
             }
             _ => {
                 println!("暂不支持编译{}", opt.source)
@@ -84,7 +92,7 @@ fn compile_torchscript(code: &String) {
     }
 }
 
-fn compile_mool(code: &String) {
+fn compile_mool(code: &String) -> String {
     let mool_ast = mool::ir::parse(&code).unwrap();
     // 输出抽象语法树
     match DEBUG.get() {
@@ -94,5 +102,17 @@ fn compile_mool(code: &String) {
             }
         }
         None => panic!("未运行初始化"),
+    }
+    unsafe {
+        let llvm_code = mool::codegen::llvm(mool_ast);
+        match DEBUG.get() {
+            Some(&debug) => {
+                if debug {
+                    println!("LLVM:\n{}\n", llvm_code);
+                }
+            }
+            None => panic!("未运行初始化"),
+        }
+        llvm_code
     }
 }

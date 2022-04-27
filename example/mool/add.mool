@@ -1,5 +1,0 @@
-let %add = fn (%x: Tensor, %y: Tensor) -> Tensor { 
-    Add(%x, %y) 
-}
-
-%add(Tensor([1, 2]), Tensor([3, 4]))
