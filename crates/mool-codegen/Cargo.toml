@@ -8,3 +8,4 @@ edition = "2018"
 [dependencies]
 mool_ir = { path = "../mool-ir" }
 llvm-sys = "130"
+regex = "*"

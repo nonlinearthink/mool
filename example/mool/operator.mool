@@ -1,0 +1,4 @@
+Add(Tensor([1,2,3]), Tensor([1,2,3]))
+Sub(Tensor([1,2,3]), Tensor([1,2,3]))
+Mul(Tensor([1,2,3]), Tensor([1,2,3]))
+Div(Tensor([1.1,2.2,3.3]), Tensor([1.1,2.2,3.3]))
