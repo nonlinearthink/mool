@@ -16,6 +16,7 @@ peg::parser! {
             / operator()
             / call()
             / assign()
+            / v:variable() { Expr::Variable(v) }
         rule assign() -> Expr = 
             ig_space() name:variable() ig_space() "=" ig_line() e:expression() ig_line() {
                 Expr::Assign(name, Box::new(e))
@@ -38,12 +39,12 @@ peg::parser! {
         }
         rule function() -> Expr =
             "fn" ig_space() "(" ig_line() args:function_args() ig_line() ")" ig_space()
-                "->" ig_space() rt:identifier() ig_space() "{" ig_line() e:program() ig_line() "}" ig_line(){
+                "->" ig_space() rt:mool_type() ig_space() "{" ig_line() e:program() ig_line() "}" ig_line(){
                 Expr::Function(Function{args:args, rtn:rt.to_string(), body:e})
             }
         rule function_args() -> Vec<FunctionArg> = args:(function_arg() ** ",") ","? { args }
         rule function_arg() -> FunctionArg =
-            ig_line() arg:variable() ig_line() ":" ig_line() annotation:identifier() ig_line() {
+            ig_line() arg:variable() ig_line() ":" ig_line() annotation:mool_type() ig_line() {
                 FunctionArg{arg: arg, annotation: annotation.to_string()}
             }
         rule variable() -> Variable =
@@ -52,6 +53,13 @@ peg::parser! {
             }
         rule identifier() -> String =
             id:$(['a'..='z' | 'A'..='Z' | '_']['a'..='z' | 'A'..='Z' | '0'..='9' | '_' ]*) {
+                id.to_owned()
+            }
+        rule mool_type() -> String =
+            id:$("int"/"bool"/"float"
+                /(
+                    "Tensor" "[" ig_line() "(" ig_line() ['0'..='9']* ig_line() ")" ig_space() "," ig_space() ("int"/"bool"/"float") ig_line() "]"
+                )) {
                 id.to_owned()
             }
         rule operator() -> Expr =

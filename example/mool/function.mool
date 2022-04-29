@@ -1,0 +1,5 @@
+let %a = fn(%x: Tensor[(2),int], %y:Tensor[(2),int]) -> Tensor[(2),int] { 
+    Add(%x, %y)
+}
+
+%a(Tensor([1,2]),Tensor([1,2]))

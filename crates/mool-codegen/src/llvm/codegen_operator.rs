@@ -10,6 +10,7 @@ pub unsafe fn codegen_operator(
     context: llvm::prelude::LLVMContextRef,
     module: llvm::prelude::LLVMModuleRef,
     builder: llvm::prelude::LLVMBuilderRef,
+    block: llvm::prelude::LLVMBasicBlockRef,
     scope: &mut Scope,
     operator: ast::Operator,
 ) -> llvm::prelude::LLVMValueRef {
@@ -23,9 +24,9 @@ pub unsafe fn codegen_operator(
         }
         ast::Operator::Add(x, y) => {
             // 构建 Add 的实参
-            let x_value = codegen_expr(context, module, builder, scope, *x);
+            let x_value = codegen_expr(context, module, builder, block, scope, *x);
             let x_type = llvm::core::LLVMTypeOf(x_value);
-            let y_value = codegen_expr(context, module, builder, scope, *y);
+            let y_value = codegen_expr(context, module, builder, block, scope, *y);
             let y_type = llvm::core::LLVMTypeOf(y_value);
             // 创建 Add 函数
             let mut arg_types = vec![x_type, y_type];
@@ -84,14 +85,15 @@ pub unsafe fn codegen_operator(
             );
             // 弹出 Add 作用域
             scope.pop();
+            llvm::core::LLVMPositionBuilderAtEnd(builder, block);
             // 返回值
             return_alloca
         }
         ast::Operator::Sub(x, y) => {
             // 构建 Sub 的实参
-            let x_value = codegen_expr(context, module, builder, scope, *x);
+            let x_value = codegen_expr(context, module, builder, block, scope, *x);
             let x_type = llvm::core::LLVMTypeOf(x_value);
-            let y_value = codegen_expr(context, module, builder, scope, *y);
+            let y_value = codegen_expr(context, module, builder, block, scope, *y);
             let y_type = llvm::core::LLVMTypeOf(y_value);
             // 创建 Sub 函数
             let mut arg_types = vec![x_type, y_type];
@@ -150,14 +152,15 @@ pub unsafe fn codegen_operator(
             );
             // 弹出 Sub 作用域
             scope.pop();
+            llvm::core::LLVMPositionBuilderAtEnd(builder, block);
             // 返回值
             return_alloca
         }
         ast::Operator::Mul(x, y) => {
             // 构建 Mul 的实参
-            let x_value = codegen_expr(context, module, builder, scope, *x);
+            let x_value = codegen_expr(context, module, builder, block, scope, *x);
             let x_type = llvm::core::LLVMTypeOf(x_value);
-            let y_value = codegen_expr(context, module, builder, scope, *y);
+            let y_value = codegen_expr(context, module, builder, block, scope, *y);
             let y_type = llvm::core::LLVMTypeOf(y_value);
             // 创建 Mul 函数
             let mut arg_types = vec![x_type, y_type];
@@ -216,14 +219,15 @@ pub unsafe fn codegen_operator(
             );
             // 弹出 Mul 作用域
             scope.pop();
+            llvm::core::LLVMPositionBuilderAtEnd(builder, block);
             // 返回值
             return_alloca
         }
         ast::Operator::Div(x, y) => {
             // 构建 Div 的实参
-            let x_value = codegen_expr(context, module, builder, scope, *x);
+            let x_value = codegen_expr(context, module, builder, block, scope, *x);
             let x_type = llvm::core::LLVMTypeOf(x_value);
-            let y_value = codegen_expr(context, module, builder, scope, *y);
+            let y_value = codegen_expr(context, module, builder, block, scope, *y);
             let y_type = llvm::core::LLVMTypeOf(y_value);
             // 创建 Div 函数
             let mut arg_types = vec![x_type, y_type];
@@ -301,6 +305,7 @@ pub unsafe fn codegen_operator(
             );
             // 弹出 Div 作用域
             scope.pop();
+            llvm::core::LLVMPositionBuilderAtEnd(builder, block);
             // 返回值
             return_alloca
         }

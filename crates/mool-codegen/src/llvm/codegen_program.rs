@@ -7,16 +7,15 @@ pub unsafe fn codegen_program(
     context: llvm::prelude::LLVMContextRef,
     module: llvm::prelude::LLVMModuleRef,
     builder: llvm::prelude::LLVMBuilderRef,
+    block: llvm::prelude::LLVMBasicBlockRef,
     scope: &mut Scope,
     program: ast::Program,
-) {
+) -> llvm::prelude::LLVMValueRef {
     match program {
-        ast::Program::Expr(expr) => {
-            codegen_expr(context, module, builder, scope, expr);
-        }
+        ast::Program::Expr(expr) => codegen_expr(context, module, builder, block, scope, expr),
         ast::Program::Let(variable, expr) => {
             // 获取右值
-            let value = codegen_expr(context, module, builder, scope, expr);
+            let value = codegen_expr(context, module, builder, block, scope, expr);
             // 检查作用域内变量，如果存在就更新值，如果不存在就创建值
             match scope.get(&variable.name) {
                 Some(alloca) => {
@@ -33,6 +32,7 @@ pub unsafe fn codegen_program(
                     scope.register(variable.name, alloca);
                 }
             }
+            value
         }
     }
 }

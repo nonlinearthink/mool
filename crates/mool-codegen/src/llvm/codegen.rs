@@ -28,7 +28,7 @@ pub unsafe fn codegen(programs: Vec<ast::Program>) -> String {
 
     // 根据AST生成代码
     for program in programs {
-        codegen_program(context, module, builder, &mut scope, program);
+        codegen_program(context, module, builder, basic_block, &mut scope, program);
         // 重置 builder 的位置
         llvm::core::LLVMPositionBuilderAtEnd(builder, basic_block);
     }
