@@ -1,3 +1,5 @@
 def sub(x: Tensor,
     y: Tensor) -> Tensor:
   return torch.sub(x, y)
+
+sub(torch.tensor([1, 2]), torch.tensor([2, 4]))

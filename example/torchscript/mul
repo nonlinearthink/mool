@@ -1,3 +1,5 @@
 def mul(x: Tensor,
     y: Tensor) -> Tensor:
   return torch.mul(x, y)
+
+mul(torch.tensor([1, 2]), torch.tensor([2, 4]))

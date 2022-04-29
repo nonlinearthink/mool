@@ -90,6 +90,18 @@ fn compile_torchscript(code: &String) {
         }
         None => panic!("未运行初始化"),
     }
+    unsafe {
+        let mool_code = mool::torchscript::codegen(torchscript_ast);
+        match DEBUG.get() {
+            Some(&debug) => {
+                if debug {
+                    println!("Mool:\n{}\n", mool_code);
+                }
+            }
+            None => panic!("未运行初始化"),
+        }
+        compile_mool(&mool_code);
+    }
 }
 
 fn compile_mool(code: &String) -> String {

@@ -1,3 +1,5 @@
 def div(x: Tensor,
     y: Tensor) -> Tensor:
   return torch.div(x, y)
+
+div(torch.tensor([1, 2]), torch.tensor([2, 4]))
