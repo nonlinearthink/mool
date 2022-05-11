@@ -17,10 +17,6 @@ pub struct Opt {
     )]
     input: Vec<PathBuf>,
 
-    /// Output File
-    #[structopt(short, long, parse(from_os_str), help = "Output File")]
-    output: Option<PathBuf>,
-
     /// Compile Target（llvm、wasm、cuda）
     #[structopt(short, long, default_value = "mool", help = "Compile Source")]
     source: String,
@@ -57,7 +53,11 @@ fn main() {
         // 编译
         match &opt.source as &str {
             "torchscript" => {
-                compile_torchscript(&code);
+                let llvm_code = compile_torchscript(&code);
+                let mut output_filename = current_filename.replace("torchscript", "llvm");
+                output_filename.push_str(".ll");
+                let mut f = File::create(output_filename).unwrap();
+                f.write_all(llvm_code.as_bytes()).unwrap();
             }
             "mool" => {
                 let llvm_code = compile_mool(&code);
@@ -76,7 +76,7 @@ fn main() {
     }
 }
 
-fn compile_torchscript(code: &String) {
+fn compile_torchscript(code: &String) -> String {
     let torchscript_ast = mool::torchscript::parse(&code).unwrap();
     // 输出抽象语法树
     match DEBUG.get() {
@@ -100,7 +100,7 @@ fn compile_torchscript(code: &String) {
             }
             None => panic!("未运行初始化"),
         }
-        compile_mool(&mool_code);
+        compile_mool(&mool_code)
     }
 }
 
