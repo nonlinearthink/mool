@@ -15,11 +15,11 @@
 
 - LLVM 13
 
-  如果不使用 LLVM 13 的话可能需要更改所有 `crates/*/Cargo.toml` 中的 `llvm-sys` 库的版本，与 LLVM 版本保持一致，比如 LLVM 13 对应 `llvm-sys = "130"`
+  不是绝对的，版本对不上或许也能跑起来，注意 `crates/*/Cargo.toml` 中的 `llvm-sys` 库的版本，与 LLVM 版本保持一致即可，比如 LLVM 13 对应 `llvm-sys = "130"`。
 
-- Rustup
+- Rust
   
-  任意支持 rust 2018 的 rustup 版本
+  使用 rustup 切换到 stable 版本即可
 
 ## 运行代码
 
@@ -50,5 +50,15 @@ sh ./bin/build.sh
 运行命令行文件：
 
 ```shell
+# 帮助
 .bin/mool-cli -h
+
+# 编译 torchscript 测试样例（普通模式）
+.bin/mool-cli example/torchscript/* -s torchscript
+# 编译 torchscript 测试样例（调试模式）
+.bin/mool-cli example/torchscript/* -s torchscript -d
+# 编译 mool 测试样例（普通模式）
+.bin/mool-cli example/mool/* -s mool
+# 编译 mool 测试样例（调试模式）
+.bin/mool-cli example/mool/* -s mool -d
 ```
